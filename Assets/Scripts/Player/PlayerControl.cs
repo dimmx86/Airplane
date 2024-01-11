@@ -44,14 +44,14 @@ public class PlayerControl : MonoBehaviour
     {
         if (!isFalls)
         {
-            if (yInput > 0f && playerTransform.eulerAngles.z < maxAngle)
+            if (yInput > 0f)
             {
                 Rotation(yInput * speedRotationUp * Time.fixedDeltaTime);
             }
             else if (yInput < 0f )
             {
-                if(playerTransform.eulerAngles.z - 360 > minAngle ||
-                    playerTransform.eulerAngles.z < maxAngle)
+                //if(playerTransform.eulerAngles.z - 360 > minAngle ||
+                //    playerTransform.eulerAngles.z < maxAngle)
                 Rotation(yInput * speedRotationDown * Time.fixedDeltaTime);
             }
             else { return; }
