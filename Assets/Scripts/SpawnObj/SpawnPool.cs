@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class SpawnPool
 {    
-    private List<SpawnObj> poolObjects;
+    private List<SpawnObj> poolObjects = new List<SpawnObj>();
 
-    public SpawnPool(List<SpawnObj> listObjects)
+
+    public bool IsObjInPool => poolObjects.Count > 0;
+
+    public void AddInPool(List<SpawnObj> Objects)
     {
-        poolObjects = listObjects;
-    }
 
+
+        foreach (SpawnObj obj in Objects)
+        {
+            if (obj != null)
+            {
+                poolObjects.Add(obj);
+            }
+        }
+    }
 
     public void ReturnObject(SpawnObj obj)
     {
@@ -18,7 +28,7 @@ public class SpawnPool
         poolObjects.Add(obj);
     }
 
-    public bool GetRandomObject(out SpawnObj obj)
+    public bool TryGetRandomObject(out SpawnObj obj)
     {
         obj = null;
         if (poolObjects.Count > 0)

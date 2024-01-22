@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnElements:
   - spawnObj: {fileID: 8450794220550316028, guid: 9ef28130a105f5642960d9147703c08f, type: 3}
-    count: 2
+    count: 7
   - spawnObj: {fileID: 5146030633226092543, guid: e9f7ed3e71d2da54888378acf9391f7b, type: 3}
     count: 2
   - spawnObj: {fileID: 2415692485970405206, guid: 66b5bc117e7ac904f8d95293c1125aa4, type: 3}
     count: 2
   - spawnObj: {fileID: 8325965125511291464, guid: f767def8ab512044fa14abf4d2ee30ba, type: 3}
-    count: 2
+    count: 7
   - spawnObj: {fileID: 6797817890769490153, guid: 09b353b05d5457846b2f91a386d48212, type: 3}
-    count: 2
+    count: 5
   - spawnObj: {fileID: 172947914137709365, guid: 5e33062e12cfdab48a369ad0348a4574, type: 3}
-    count: 2
+    count: 5
   - spawnObj: {fileID: 3558207412421260215, guid: b07587cb115130047a159f2d4e39000e, type: 3}
-    count: 2
+    count: 3
   - spawnObj: {fileID: 7746434720772698741, guid: 31620a67955c5cc469573048d22de789, type: 3}
-    count: 2
+    count: 7
   - spawnObj: {fileID: 1516850895306548200, guid: 01b86451266c56f4eb84a627a8414cd4, type: 3}
-    count: 2
+    count: 7
   - spawnObj: {fileID: 4680771698896654229, guid: 1630cb403cfb4254790b873a5afa6e4f, type: 3}
-    count: 2
+    count: 7

@@ -18,5 +18,6 @@ public class SpawnObj : MonoBehaviour
 public enum SpawnObjType
 {
     Island,
-    Bonus
+    Ñanister,
+    Coin
 }

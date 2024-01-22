@@ -1,3 +1,4 @@
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,32 +10,119 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Vector2 randomSpawnPosition;
     [SerializeField][Min(0.01f)] private float interval;
 
-    private List<SpawnPool> spawnPool = new List<SpawnPool>();
 
-    private WaitForSeconds waitInterval;
+    private float nextSpawnPosition;
 
     private void Awake()
     {
-        waitInterval = new WaitForSeconds(interval);
+        nextSpawnPosition = transform.position.x + interval;
         InitPools();
         cleaner.OnCleanObj.AddListener(OnReturnInPool);
     }
 
-    private IEnumerator Spawn()
+    private void FixedUpdate()
     {
-        yield return waitInterval;
+        if (transform.position.x > nextSpawnPosition)
+        {
+            Spawn();
+        }
+    }
+
+    private void Spawn()
+    {
+        
+
+            for (int i = 0; i < spawnerData.Count; i++)
+            {
+                if (!spawnerData[i].isSpawning) continue;
+
+                for (int j = 0; j < spawnerData[i].spawnCount; j++)
+                {
+                    if (!spawnerData[i].spawnPool.IsObjInPool)
+                    {
+                        spawnerData[i].spawnPool.AddInPool(
+                            CreatPool(spawnerData[i].spawnList));
+
+                    }
+
+                    SpawnObject(spawnerData[i].isRandomRatation,
+                       spawnerData[i].spawnPool);
+                }
+            }
+        
+        nextSpawnPosition = transform.position.x + interval;
+    }
+
+
+    private void SpawnObject(bool isRandomRatation, SpawnPool pool)
+    {
+        if (pool.TryGetRandomObject(out SpawnObj obj))
+        {
+            if (NewSpawnPosition(obj.RadiusDeadZone, out Vector3 spawnPos))
+            {
+                obj.transform.position = spawnPos;
+                if (isRandomRatation)
+                {
+                    obj.transform.rotation = Quaternion.Euler(
+                        0f,
+                        Random.Range(0f,360f),
+                        0f);
+                }
+                obj.gameObject.SetActive(true);
+            }
+            else
+            {
+                pool.ReturnObject(obj);
+                return;
+            } 
+
+        }
+        else
+        {
+            //AddInPools();
+            print("not obj in pool");
+        }
+    }
+
+    private bool NewSpawnPosition(float radiusDeadZone, out Vector3 spawnPos)
+    {
+        
+        spawnPos = Vector3.zero;
+       
+        for (int i = 0; i < 10 ; i++)
+        {
+            spawnPos.y = Random.Range(
+                -randomSpawnPosition.y,
+                randomSpawnPosition.y);
+            spawnPos.x = Random.Range(
+                -randomSpawnPosition.x,
+                randomSpawnPosition.x);
+            spawnPos = transform.position + spawnPos;
+            RaycastHit[] hits = Physics.SphereCastAll(spawnPos, radiusDeadZone, Vector3.right);
+
+            if (hits.Length > 0)
+            {
+                print("Bad position");
+                continue;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void InitPools()
     {
-        spawnPool.Clear();
         for (int i = 0; i < spawnerData.Count; i++)
         {
-            spawnPool.Add(CreatPool(spawnerData[i].spawnList));
+            spawnerData[i].spawnPool.AddInPool(CreatPool(spawnerData[i].spawnList));
         }
     }
 
-    private SpawnPool CreatPool(SpawnList list)
+    private List<SpawnObj> CreatPool(SpawnList list)
     {
         List<SpawnObj> pool = new List<SpawnObj>();
         foreach (SpawnElement itam in list.SpawnElements)
@@ -48,16 +136,16 @@ public class Spawner : MonoBehaviour
         }
 
 
-        return new SpawnPool(pool);
+        return pool;
     }
 
     private void OnReturnInPool(SpawnObj obj)
     {
-        for(int i = 0;i < spawnPool.Count;i++)
+        for(int i = 0;i < spawnerData.Count;i++)
         {
             if (spawnerData[i].spawnObjType == obj.GetTypeObj())
             {
-                spawnPool[i].ReturnObject(obj);
+                spawnerData[i].spawnPool.ReturnObject(obj);
                 return;
             }
         }
@@ -71,11 +159,12 @@ public class Spawner : MonoBehaviour
 }
 
 [System.Serializable]
-public struct SpawnerData
+public class SpawnerData
 {
     public SpawnList spawnList;
     public int spawnCount;
     public bool isRandomRatation;
     public bool isSpawning;
     public SpawnObjType spawnObjType;
+    [HideInInspector] public SpawnPool spawnPool = new SpawnPool();
 }

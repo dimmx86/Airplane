@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Island base Variant 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7272447088113604559, guid: 83086d6ab8a842548bf74b5f0df82206, type: 3}
+      propertyPath: radiusDeadZone
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
