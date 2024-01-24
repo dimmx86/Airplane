@@ -38,7 +38,7 @@ public class FuelTank : MonoBehaviour
         if (isExpense)
         {
             curentFuel -= expenseInFixed;
-            print(curentFuel);
+
             if (curentFuel <= 0)
             {
                 OnFuelRanOut?.Invoke();
